@@ -1,5 +1,14 @@
-body {
+* {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  box-sizing: border-box !important;
+}
+
+html {
+  background-color: #eaeaea;
+  color: #383a3f;
+  font-family: "Lato", "Arial", sans-serif;
+  font-size: 20px;
+  font-weight: 300;
+  text-rendering: optimizeLegibility;
 }
