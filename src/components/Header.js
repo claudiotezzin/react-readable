@@ -4,7 +4,7 @@ import logo from "assets/images/readable.png";
 const Header = () => {
   return (
     <header>
-      <img className="app-logo" src={logo} alt="Readable Logo" />
+      <img src={logo} alt="Readable Logo" />
     </header>
   );
 };

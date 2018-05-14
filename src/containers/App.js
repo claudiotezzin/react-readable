@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import "normalize.css";
-import "styles/vendors/css/Grid.css";
 import "styles/App.css";
 import Header from "components/Header";
+import PostsPage from "containers/PostsPage";
 
 class App extends Component {
   render() {
     return (
       <div>
         <Header />
+        <PostsPage />
       </div>
     );
   }

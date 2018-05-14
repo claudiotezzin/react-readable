@@ -1,7 +1,151 @@
+/* COLORS
+Orange: #FFBC42
+Pink: #D81159
+Purple: #8F2D56
+Green: #218380
+Main Dark Grey: #383a3f
+*/
+
+/* -------------------------------------------------- */
+/* REUSABLE COMPONENTS */
+/* -------------------------------------------------- */
 .row {
   max-width: 1140px;
   margin: 0 auto;
 }
+
+/* --------------- POSTS HEADER --------------- */
+
+.posts-title {
+  text-align: center;
+  display: inline-block;
+}
+
+.posts-categories {
+  display: inline-block;
+  margin-top: 50px;
+  text-align: center;
+}
+
+.btn:link,
+.btn:visited {
+  display: inline-block;
+  padding: 10px 30px;
+  text-decoration: none;
+  font-size: 80%;
+  /* border-radius: 200px; */
+  /* -moz-border-radius: 200px;
+  -webkit-border-radius: 200px; */
+  font-weight: 300;
+  text-transform: uppercase;
+  transition: background-color 0.5s color 0.5s border 0.5s;
+}
+
+.btn-categories:link,
+.btn-categories:visited {
+  background-color: #ffbc42;
+  color: #383a3f;
+  font-weight: 4ß00;
+}
+
+.btn-categories:hover,
+.btn-categories:active {
+  background-color: #ffaa0f;
+  color: #fff;
+}
+
+.posts-search {
+  text-align: right;
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.posts-filter {
+  display: inline-block;
+}
+
+.posts-filter-dropdown {
+  float: left;
+  margin-right: 20px;
+}
+
+/* --------------- CATEGORIES --------------- */
+
+.section-categories-overlay {
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.categories-showcase {
+  list-style: none;
+  width: 100%;
+  height: 100%;
+}
+
+.categories-showcase li {
+  display: block;
+  width: 100%;
+  height: 25%;
+}
+
+.category-photo {
+  position: relative;
+  height: 100%;
+  margin: 0;
+  text-align: center;
+  overflow: hidden;
+  background: black;
+}
+
+.category-photo-title {
+  z-index: 100;
+  position: absolute;
+  color: #cacaca;
+  font-size: 200%;
+  font-weight: 700;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: color 0.5s;
+}
+
+.category-photo img {
+  opacity: 0.5;
+  width: 100%;
+  height: auto;
+  transform: scale(1.15);
+  transition: transform 0.5s, opacity 0.5s;
+}
+
+.category-photo img:hover {
+  transform: scale(1.03);
+  opacity: 1;
+}
+
+.category-photo img:hover + .category-photo-title {
+  color: #fff;
+}
+/* ----------------- HEADINGS ----------------- */
+
+h1 {
+  font-size: 240%;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  word-spacing: 4px;
+}
+
+/* -------------------------------------------------- */
+/* HEADER */
+/* -------------------------------------------------- */
 
 header {
   height: 120px;
@@ -16,11 +160,12 @@ header img {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-.app-logo {
   height: 60%;
 }
+
+/* -------------------------------------------------- */
+/* DEBUG */
+/* -------------------------------------------------- */
 
 .debug {
   border: dashed 2px tomato;
