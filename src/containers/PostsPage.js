@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import CategoriesSelector from "components/CategoriesSelector";
+import Post from "components/Post";
 import Dropdown from "react-dropdown";
 import "styles/customDropdown.css";
 
@@ -50,7 +51,17 @@ class PostListPage extends Component {
           </div>
         </div>
 
-        <div className="row debug">POSTS</div>
+        <Post />
+        {this.state.showCategory && (
+          <CategoriesSelector onCategorySelected={this.onCategorySelected} />
+        )}
+
+        <Post />
+        {this.state.showCategory && (
+          <CategoriesSelector onCategorySelected={this.onCategorySelected} />
+        )}
+
+        <Post />
         {this.state.showCategory && (
           <CategoriesSelector onCategorySelected={this.onCategorySelected} />
         )}
