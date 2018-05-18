@@ -8,19 +8,19 @@ class Post extends Component {
         <div className="span-10-of-12 post">
           <div className="row">
             <div className="post-tag">
-              <img className="post-tag-icon" src={UdacityIcon} />
+              <img className="post-tag-icon" src={UdacityIcon} alt="Udacity" />
             </div>
             <h3 className="span-8-of-12 post-title">
               A very veru long and interesting title
             </h3>
             <div>
-              <a
-                href="#"
+              <i
                 className="icon ion-ios-create post-icons post-edit-icon"
+                onClick={() => {}}
               />
-              <a
-                href="#"
+              <i
                 className="icon ion-ios-close post-icons post-close-icon"
+                onClick={() => {}}
               />
             </div>
           </div>
@@ -40,13 +40,19 @@ class Post extends Component {
             </p>
           </div>
           <div className="post-rating-info">
-            <a href="#" className="icon ion-ios-arrow-down post-rating-icons" />
+            <i
+              className="icon ion-ios-arrow-down post-rating-icons"
+              onClick={() => {}}
+            />
             <div className="post-rating-value">24</div>
-            <a href="#" className="icon ion-ios-arrow-up post-rating-icons" />
+            <i
+              className="icon ion-ios-arrow-up post-rating-icons"
+              onClick={() => {}}
+            />
             <p className="post-comments">20 comments</p>
           </div>
           <div className="post-footer">
-            <p>By Claudio Tezzin</p>
+            <p>Claudio Tezzin</p>
             <p>20/05/2018</p>
           </div>
         </div>

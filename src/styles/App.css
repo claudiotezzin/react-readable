@@ -27,6 +27,23 @@ Main Dark Grey: #383a3f
     color-stop(50%, #383a3f)
   );
 }
+/* --------------- COLORS --------------- */
+.pink-bkg {
+  background-color: #d81159 !important;
+}
+
+.orange-bkg {
+  background-color: #ffbc42 !important;
+}
+
+.purple-bkg {
+  background-color: #8f2d56 !important;
+}
+
+.green-bkg {
+  background-color: #218380 !important;
+}
+
 /* --------------- POSTS HEADER --------------- */
 
 .posts-title {
@@ -99,6 +116,7 @@ Main Dark Grey: #383a3f
   list-style: none;
   width: 100%;
   height: 100%;
+  background-color: black;
 }
 
 .categories-showcase li {
@@ -107,41 +125,48 @@ Main Dark Grey: #383a3f
   height: 25%;
 }
 
-.category-photo {
-  position: relative;
-  height: 100%;
-  margin: 0;
-  text-align: center;
-  overflow: hidden;
-  background: black;
-}
-
 .category-photo-title {
   z-index: 100;
   position: absolute;
-  color: #cacaca;
+  color: #383a3f;
   font-size: 200%;
-  font-weight: 700;
+  font-weight: 500;
+  letter-spacing: 2px;
+  word-spacing: 5px;
+  max-height: 48%;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   transition: color 0.5s;
 }
 
+.category-photo {
+  position: relative;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  opacity: 0.5;
+  transition: opacity 0.5s;
+}
+
 .category-photo img {
   opacity: 0.5;
-  width: 100%;
-  height: auto;
+  width: auto;
+  height: 100%;
   transform: scale(1.15);
   transition: transform 0.5s, opacity 0.5s;
 }
 
-.category-photo img:hover {
+.category-photo:hover {
+  opacity: 1;
+}
+
+.category-photo:hover img {
   transform: scale(1.03);
   opacity: 1;
 }
 
-.category-photo img:hover + .category-photo-title {
+.category-photo:hover img + .category-photo-title {
   color: #fff;
 }
 
