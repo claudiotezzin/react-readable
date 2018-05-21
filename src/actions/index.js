@@ -2,7 +2,7 @@ import * as ReadableAPI from "api/readable-api";
 
 // ACTIONS
 export const FETCH_CATEGORIES = "FETCH_CATEGORIES";
-export const FETCH_POST = "FETCH_POST";
+export const FETCH_POSTS = "FETCH_POSTS";
 
 export const ADD_POST = "ADD_POST";
 export const REMOVE_POST = "REMOVE_POST";
@@ -26,19 +26,26 @@ export const getCategories = categories => ({
   categories
 });
 
-// export function addRecipe({ title, body, author, category }) {
-//   return {
-//     type: ADD_POST,
-//     recipe,
-//     day,
-//     meal
-//   };
-// }
+export const fetchAllPosts = () => dispatch =>
+  ReadableAPI.getAllPosts().then(posts => dispatch(getPosts(posts)));
 
-// export function removeRecipeFromCalendar({ day, meal }) {
-//   return {
-//     type: REMOVE_FROM_CALENDAR,
-//     day,
-//     meal
-//   };
-// }
+export const getPosts = posts => ({
+  type: FETCH_POSTS,
+  posts
+});
+
+export const votePostUp = postId => dispatch =>
+  ReadableAPI.votePostUp(postId).then(post => dispatch(votedPostUp(post)));
+
+export const votedPostUp = post => ({
+  type: VOTE_POST_UP,
+  post
+});
+
+export const votePostDown = postId => dispatch =>
+  ReadableAPI.votePostDown(postId).then(post => dispatch(votedPostDown(post)));
+
+export const votedPostDown = post => ({
+  type: VOTE_POST_DOWN,
+  post
+});

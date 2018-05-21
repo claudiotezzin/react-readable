@@ -1,19 +1,33 @@
 import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
+
+import "styles/customDropdown.css";
+
+// Components
+import { fetchAllCategories, fetchAllPosts } from "../actions";
 import CategoriesSelector from "components/CategoriesSelector";
 import Post from "components/Post";
 import Dropdown from "react-dropdown";
-import "styles/customDropdown.css";
 
 const options = ["one", "two", "three"];
 const defaultOption = options[0];
 
 class PostListPage extends Component {
   state = {
-    showCategory: false
+    showCategory: false,
+    selectedCategory: "all"
   };
 
+  componentDidMount() {
+    this.props.getCategories();
+    this.props.getPosts();
+  }
+
   onCategorySelected = category => {
-    this.setState({ showCategory: false });
+    this.setState({
+      showCategory: false,
+      selectedCategory: category.name
+    });
   };
 
   onCategoryButtonClicked() {
@@ -21,11 +35,14 @@ class PostListPage extends Component {
   }
 
   render() {
+    const { selectedCategory } = this.state;
+    const { posts, categories } = this.props;
+
     return (
       <Fragment>
         <div className="row">
           <div className="posts-title col span-1-of-2">
-            <h1>All Posts</h1>
+            <h1>{selectedCategory} Posts</h1>
           </div>
 
           <div className="posts-categories col span-1-of-2">
@@ -51,23 +68,39 @@ class PostListPage extends Component {
           </div>
         </div>
 
-        <Post />
-        {this.state.showCategory && (
-          <CategoriesSelector onCategorySelected={this.onCategorySelected} />
-        )}
+        {posts
+          .filter(
+            post =>
+              selectedCategory === "all" ||
+              post.category.name === selectedCategory
+          )
+          .map(post => <Post key={post.id} postInfo={post} />)}
 
-        <Post />
-        {this.state.showCategory && (
-          <CategoriesSelector onCategorySelected={this.onCategorySelected} />
-        )}
-
-        <Post />
-        {this.state.showCategory && (
-          <CategoriesSelector onCategorySelected={this.onCategorySelected} />
-        )}
+        <CategoriesSelector
+          show={this.state.showCategory}
+          categories={categories}
+          onCategorySelected={this.onCategorySelected}
+        />
       </Fragment>
     );
   }
 }
 
-export default PostListPage;
+function mapStateToProps({ categories, posts }) {
+  return {
+    categories: Object.keys(categories).map(key => categories[key]),
+    posts: Object.keys(posts).map(key => ({
+      ...posts[key],
+      category: categories[posts[key].category]
+    }))
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getCategories: data => dispatch(fetchAllCategories(data)),
+    getPosts: data => dispatch(fetchAllPosts(data))
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostListPage);

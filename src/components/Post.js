@@ -1,64 +1,83 @@
-import React, { Component } from "react";
-import UdacityIcon from "assets/images/udacity-orange.jpg";
+import React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-class Post extends Component {
-  render() {
-    return (
-      <div className="row">
-        <div className="span-10-of-12 post">
-          <div className="row">
-            <div className="post-tag">
-              <img className="post-tag-icon" src={UdacityIcon} alt="Udacity" />
-            </div>
-            <h3 className="span-8-of-12 post-title">
-              A very veru long and interesting title
-            </h3>
-            <div>
-              <i
-                className="icon ion-ios-create post-icons post-edit-icon"
-                onClick={() => {}}
-              />
-              <i
-                className="icon ion-ios-close post-icons post-close-icon"
-                onClick={() => {}}
-              />
-            </div>
+import { votePostUp, votePostDown } from "../actions";
+
+const Post = ({ postInfo, voteUp, voteDown }) => {
+  var postDate = new Date(postInfo.timestamp);
+
+  return (
+    <div className="row">
+      <div className="span-10-of-12 post">
+        <div className="row">
+          <div className="post-tag">
+            <img
+              className="post-tag-icon"
+              style={{ backgroundColor: postInfo.category.color }}
+              src={postInfo.category.logo}
+              alt="Udacity"
+            />
           </div>
-          <div className="line-separator" />
-          <div className="span-8-of-12 post-body">
-            <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
-            </p>
-          </div>
-          <div className="post-rating-info">
+          <h3 className="span-8-of-12 post-title">{postInfo.title}</h3>
+          <div>
             <i
-              className="icon ion-ios-arrow-down post-rating-icons"
+              className="icon ion-ios-create post-icons post-edit-icon"
+              style={{ color: postInfo.category.color }}
               onClick={() => {}}
             />
-            <div className="post-rating-value">24</div>
             <i
-              className="icon ion-ios-arrow-up post-rating-icons"
+              className="icon ion-ios-close post-icons post-close-icon"
               onClick={() => {}}
             />
-            <p className="post-comments">20 comments</p>
-          </div>
-          <div className="post-footer">
-            <p>Claudio Tezzin</p>
-            <p>20/05/2018</p>
           </div>
         </div>
+        <div className="line-separator" />
+        <div className="span-8-of-12 post-body">
+          <p>{postInfo.body}</p>
+        </div>
+        <div className="post-rating-info">
+          <i
+            className="icon ion-ios-arrow-down post-rating-icons"
+            style={{ color: postInfo.category.color }}
+            onClick={() => voteDown(postInfo.id)}
+          />
+          <div className="post-rating-value">{postInfo.voteScore}</div>
+          <i
+            className="icon ion-ios-arrow-up post-rating-icons"
+            style={{ color: postInfo.category.color }}
+            onClick={() => voteUp(postInfo.id)}
+          />
+          <p className="post-comments">{postInfo.commentCount} comments</p>
+        </div>
+        <div className="post-footer">
+          <p>{postInfo.author}</p>
+          <p>
+            {postDate.getFullYear() +
+              "/" +
+              postDate.getMonth() +
+              "/" +
+              postDate.getDay() +
+              " - " +
+              postDate.getHours() +
+              ":" +
+              ("0" + postDate.getMinutes()).substr(-2)}
+          </p>
+        </div>
       </div>
-    );
-  }
+    </div>
+  );
+};
+
+Post.propTypes = {
+  postInfo: PropTypes.object.isRequired
+};
+
+function mapDispatchToProps(dispatch) {
+  return {
+    voteUp: postId => dispatch(votePostUp(postId)),
+    voteDown: postId => dispatch(votePostDown(postId))
+  };
 }
 
-export default Post;
+export default connect(null, mapDispatchToProps)(Post);

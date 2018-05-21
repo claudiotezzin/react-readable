@@ -17,30 +17,25 @@ export const getAllCategories = () =>
     .then(res => res.json())
     .then(data => data.categories);
 
-// export const get = bookId =>
-//   fetch(`${api}/books/${bookId}`, { headers })
-//     .then(res => res.json())
-//     .then(data => data.book);
+export const getAllPosts = () =>
+  fetch(`${api}/posts`, { headers }).then(res => res.json());
 
-// export const update = (book, shelf) =>
-//   fetch(`${api}/books/${book.id}`, {
-//     method: "PUT",
-//     headers: {
-//       ...headers,
-//       "Content-Type": "application/json"
-//     },
-//     body: JSON.stringify({ shelf })
-//   }).then(res => res.json());
+export const votePostUp = postId =>
+  fetch(`${api}/posts/${postId}`, {
+    method: "POST",
+    headers: {
+      ...headers,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ option: "upVote" })
+  }).then(res => res.json());
 
-// export const search = query => {
-//   return fetch(`${api}/search`, {
-//     method: "POST",
-//     headers: {
-//       ...headers,
-//       "Content-Type": "application/json"
-//     },
-//     body: JSON.stringify({ query })
-//   })
-//     .then(res => res.json())
-//     .then(data => data.books);
-// };
+export const votePostDown = postId =>
+  fetch(`${api}/posts/${postId}`, {
+    method: "POST",
+    headers: {
+      ...headers,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ option: "downVote" })
+  }).then(res => res.json());

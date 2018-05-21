@@ -70,15 +70,15 @@ Main Dark Grey: #383a3f
 
 .btn-categories:link,
 .btn-categories:visited {
-  background-color: #ffbc42;
-  color: #383a3f;
-  font-weight: 4ß00;
+  background-color: #383a3f;
+  color: #fff;
+  font-weight: 400;
 }
 
 .btn-categories:hover,
 .btn-categories:active {
-  background-color: #ffaa0f;
-  color: #fff;
+  background-color: #a8a8a8;
+  color: #383a3f;
 }
 
 .posts-search {
@@ -110,6 +110,17 @@ Main Dark Grey: #383a3f
   bottom: 0;
   z-index: 2;
   cursor: pointer;
+  transition: visibility 0.5s, opacity 0.25s;
+}
+
+.section-categories-overlay-hide {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.section-categories-overlay-show {
+  visibility: visible;
+  opacity: 1;
 }
 
 .categories-showcase {
@@ -138,6 +149,7 @@ Main Dark Grey: #383a3f
   top: 50%;
   transform: translate(-50%, -50%);
   transition: color 0.5s;
+  text-transform: capitalize;
 }
 
 .category-photo {
@@ -199,14 +211,14 @@ Main Dark Grey: #383a3f
 
 .post-tag {
   position: absolute;
-  background-color: #d81159;
+  background-color: #383a3f;
   width: 40px;
   height: 40px;
   margin-left: 30px;
 }
 
 .post-tag-icon {
-  border: 2px solid #d81159;
+  border: 2px solid #fff;
   border-radius: 50%;
   margin-top: 50%;
   height: 40px;
@@ -221,7 +233,6 @@ Main Dark Grey: #383a3f
 .post-edit-icon {
   right: 60px;
   top: 10px;
-  color: #d81159;
 }
 
 .post-close-icon {
@@ -244,7 +255,7 @@ Main Dark Grey: #383a3f
   overflow: hidden;
   letter-spacing: 2px;
   word-spacing: 5px;
-  max-height: 48%;
+  height: 48%;
   text-overflow: ellipsis;
 }
 
@@ -289,11 +300,10 @@ Main Dark Grey: #383a3f
 
 .post-rating-icons {
   display: inline-block;
-  color: #d81159;
 }
 
 .post-rating-icons:hover {
-  color: #a8a8a8;
+  color: #a8a8a8 !important;
 }
 
 /* ----------------- HEADINGS ----------------- */
