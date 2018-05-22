@@ -1,5 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+
+import { fetchAllCategories, selectCategory } from "../actions";
 
 const CategoriesSelector = ({ show, categories, onCategorySelected }) => {
   return (
@@ -13,8 +17,10 @@ const CategoriesSelector = ({ show, categories, onCategorySelected }) => {
       <ul className="categories-showcase">
         {categories.map(category => {
           return (
-            <li
+            <Link
+              className="categories-showcase-item"
               key={category.name}
+              to={category.name === "all" ? "/" : `/${category.name}`}
               onClick={() => onCategorySelected(category)}
             >
               <figure
@@ -24,7 +30,7 @@ const CategoriesSelector = ({ show, categories, onCategorySelected }) => {
                 <img src={category.logo} alt="Two" />
                 <p className="category-photo-title">{category.name}</p>
               </figure>
-            </li>
+            </Link>
           );
         })}
       </ul>
@@ -33,8 +39,20 @@ const CategoriesSelector = ({ show, categories, onCategorySelected }) => {
 };
 
 CategoriesSelector.propTypes = {
-  show: PropTypes.bool.isRequired,
-  categories: PropTypes.array.isRequired,
-  onCategorySelected: PropTypes.func.isRequired
+  show: PropTypes.bool.isRequired
 };
-export default CategoriesSelector;
+
+function mapStateToProps({ categories }) {
+  return {
+    categories: Object.keys(categories).map(key => categories[key])
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getCategories: () => dispatch(fetchAllCategories()),
+    onCategorySelected: category => dispatch(selectCategory(category))
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoriesSelector);

@@ -3,7 +3,8 @@ import {
   FETCH_CATEGORIES,
   FETCH_POSTS,
   VOTE_POST_UP,
-  VOTE_POST_DOWN
+  VOTE_POST_DOWN,
+  SELECT_CATEGORY
 } from "../actions/index";
 
 import UdacityLogo from "assets/images/udacity.png";
@@ -15,18 +16,20 @@ const categoriesDefault = {
   all: {
     name: "all",
     logo: AllLogo,
-    color: "#8F2D56"
+    color: "#8F2D56",
+    isSelected: true
   }
 };
 
 function categories(state = {}, action) {
+  let result = {};
   switch (action.type) {
     case FETCH_CATEGORIES:
       const { categories } = action;
 
-      let result = { ...categoriesDefault };
+      result = { ...categoriesDefault };
 
-      for (var category in categories) {
+      for (const category in categories) {
         const catName = categories[category].name;
         result[catName] = {
           name: catName,
@@ -41,12 +44,27 @@ function categories(state = {}, action) {
               ? "#FFBC42"
               : catName === "react"
                 ? "#218380"
-                : "#D81159"
+                : "#D81159",
+          isSelected: false
         };
       }
 
       return result;
 
+    case SELECT_CATEGORY:
+      const { category } = action;
+
+      result = { ...state };
+
+      for (const cat in result) {
+        const catName = result[cat].name;
+        if (catName === category.name) {
+          result[catName].isSelected = true;
+        } else {
+          result[catName].isSelected = false;
+        }
+      }
+      return result;
     default:
       return state;
   }

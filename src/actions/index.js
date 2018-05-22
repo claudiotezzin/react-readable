@@ -4,6 +4,8 @@ import * as ReadableAPI from "api/readable-api";
 export const FETCH_CATEGORIES = "FETCH_CATEGORIES";
 export const FETCH_POSTS = "FETCH_POSTS";
 
+export const SELECT_CATEGORY = "SELECT_CATEGORY";
+
 export const ADD_POST = "ADD_POST";
 export const REMOVE_POST = "REMOVE_POST";
 export const UPDATE_POST = "UPDATE_POST";
@@ -48,4 +50,9 @@ export const votePostDown = postId => dispatch =>
 export const votedPostDown = post => ({
   type: VOTE_POST_DOWN,
   post
+});
+
+export const selectCategory = category => ({
+  type: SELECT_CATEGORY,
+  category
 });
