@@ -16,7 +16,7 @@ const Post = ({ postInfo, voteUp, voteDown }) => {
               className="post-tag-icon"
               style={{ backgroundColor: postInfo.category.color }}
               src={postInfo.category.logo}
-              alt="Udacity"
+              alt="Category Logo"
             />
           </div>
           <h3 className="span-8-of-12 post-title">{postInfo.title}</h3>

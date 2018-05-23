@@ -52,13 +52,13 @@ function categories(state = {}, action) {
       return result;
 
     case SELECT_CATEGORY:
-      const { category } = action;
+      const { categoryName } = action;
 
       result = { ...state };
 
       for (const cat in result) {
         const catName = result[cat].name;
-        if (catName === category.name) {
+        if (catName === categoryName) {
           result[catName].isSelected = true;
         } else {
           result[catName].isSelected = false;

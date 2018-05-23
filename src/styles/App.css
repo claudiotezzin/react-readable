@@ -57,8 +57,7 @@ Main Dark Grey: #383a3f
   text-align: center;
 }
 
-.btn:link,
-.btn:visited {
+.btn {
   display: inline-block;
   padding: 10px 30px;
   text-decoration: none;
@@ -68,8 +67,7 @@ Main Dark Grey: #383a3f
   transition: background-color 0.5s color 0.5s border 0.5s;
 }
 
-.btn-categories:link,
-.btn-categories:visited {
+.btn-categories {
   background-color: #383a3f;
   color: #fff;
   font-weight: 400;
@@ -77,6 +75,7 @@ Main Dark Grey: #383a3f
 
 .btn-categories:hover,
 .btn-categories:active {
+  cursor: pointer;
   background-color: #a8a8a8;
   color: #383a3f;
 }

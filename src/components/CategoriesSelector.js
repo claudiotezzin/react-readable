@@ -21,7 +21,7 @@ const CategoriesSelector = ({ show, categories, onCategorySelected }) => {
               className="categories-showcase-item"
               key={category.name}
               to={category.name === "all" ? "/" : `/${category.name}`}
-              onClick={() => onCategorySelected(category)}
+              onClick={() => onCategorySelected(category.name)}
             >
               <figure
                 className="category-photo"

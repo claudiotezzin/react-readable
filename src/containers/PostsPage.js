@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import "styles/customDropdown.css";
 
 // Components
-import { fetchAllPosts } from "../actions";
+import { fetchAllPosts, fetchAllCategories } from "../actions";
 import CategoriesSelector from "components/CategoriesSelector";
 import AddButton from "components/AddButton";
 import Post from "components/Post";
@@ -17,6 +18,7 @@ class PostPage extends Component {
   showCategories = false;
 
   componentDidMount() {
+    this.props.getCategories();
     this.props.getPosts();
   }
 
@@ -30,62 +32,65 @@ class PostPage extends Component {
   }
 
   render() {
-    const { posts, selectedCategory } = this.props;
+    const { posts, match } = this.props;
 
-    return (
-      <Fragment>
-        {selectedCategory === undefined ? (
-          <div>LOADING...</div>
-        ) : (
-          <Fragment>
-            <div className="row">
-              <div className="posts-title col span-1-of-2">
-                <h1>{selectedCategory.name} Posts</h1>
-              </div>
+    const selectedCategory =
+      match.params.categoryName === undefined
+        ? "all"
+        : match.params.categoryName;
 
-              <div className="posts-categories col span-1-of-2">
-                <a
-                  className="btn btn-categories"
-                  href="#categories"
-                  onClick={() => this.onCategoryButtonClicked()}
-                >
-                  Categories
-                </a>
-              </div>
-            </div>
-            <div className="row">
-              <div className="posts-search col span-6-of-8">SEARCH</div>
-              <div className="posts-filter col span-2-of-8">
-                <Dropdown
-                  className="posts-filter-dropdown"
-                  options={options}
-                  onChange={() => {}}
-                  value={defaultOption}
-                  placeholder="Select an option"
-                />
-              </div>
+    if (posts === undefined || posts.length === 0) {
+      return <div>LOADING...</div>;
+    } else {
+      return (
+        <Fragment>
+          <div className="row">
+            <div className="posts-title col span-1-of-2">
+              <h1>{selectedCategory} Posts</h1>
             </div>
 
-            {posts
-              .filter(
-                post =>
-                  selectedCategory.name === "all" ||
-                  post.category.name === selectedCategory.name
-              )
-              .map(post => <Post key={post.id} postInfo={post} />)}
+            <div className="posts-categories col span-1-of-2">
+              <a
+                className="btn btn-categories"
+                onClick={() => this.onCategoryButtonClicked()}
+              >
+                Categories
+              </a>
+            </div>
+          </div>
+          <div className="row">
+            <div className="posts-search col span-6-of-8">SEARCH</div>
+            <div className="posts-filter col span-2-of-8">
+              <Dropdown
+                className="posts-filter-dropdown"
+                options={options}
+                onChange={() => {}}
+                value={defaultOption}
+                placeholder="Select an option"
+              />
+            </div>
+          </div>
 
-            <CategoriesSelector show={this.showCategories} />
+          {posts
+            .filter(
+              post =>
+                selectedCategory === "all" ||
+                post.category.name === selectedCategory
+            )
+            .map(post => <Post key={post.id} postInfo={post} />)}
 
-            <AddButton />
-          </Fragment>
-        )}
-      </Fragment>
-    );
+          <CategoriesSelector show={this.showCategories} />
+
+          <AddButton />
+        </Fragment>
+      );
+    }
   }
 }
 
 function mapStateToProps({ categories, posts }) {
   return {
+    categories: Object.keys(categories).map(key => categories[key]),
     posts: Object.keys(posts).map(key => ({
       ...posts[key],
       category: categories[posts[key].category]
@@ -95,7 +100,8 @@ function mapStateToProps({ categories, posts }) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPosts: () => dispatch(fetchAllPosts())
+    getPosts: () => dispatch(fetchAllPosts()),
+    getCategories: () => dispatch(fetchAllCategories())
   };
 }
 

@@ -52,7 +52,7 @@ export const votedPostDown = post => ({
   post
 });
 
-export const selectCategory = category => ({
+export const selectCategory = categoryName => ({
   type: SELECT_CATEGORY,
-  category
+  categoryName
 });
