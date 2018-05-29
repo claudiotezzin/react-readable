@@ -4,7 +4,11 @@ import {
   FETCH_POSTS,
   VOTE_POST_UP,
   VOTE_POST_DOWN,
-  SELECT_CATEGORY
+  SELECT_CATEGORY,
+  FETCH_POST_BY_ID,
+  FETCH_POST_COMMENTS,
+  VOTE_COMMENT_DOWN,
+  VOTE_COMMENT_UP
 } from "../actions/index";
 
 import UdacityLogo from "assets/images/udacity.png";
@@ -72,7 +76,7 @@ function categories(state = {}, action) {
 
 function posts(state = {}, action) {
   switch (action.type) {
-    case FETCH_POSTS:
+    case FETCH_POSTS: {
       const { posts } = action;
 
       let result = {};
@@ -82,14 +86,52 @@ function posts(state = {}, action) {
         };
       }
       return result;
+    }
     case VOTE_POST_UP:
-    case VOTE_POST_DOWN:
+    case VOTE_POST_DOWN: {
       const { post } = action;
 
       return {
         ...state,
         [post.id]: post
       };
+    }
+    case FETCH_POST_BY_ID: {
+      const { post } = action;
+
+      return {
+        ...state,
+        [post.id]: post
+      };
+    }
+    default:
+      return state;
+  }
+}
+
+function comments(state = {}, action) {
+  switch (action.type) {
+    case FETCH_POST_COMMENTS: {
+      const { comments } = action;
+
+      let result = {};
+      for (var index in comments) {
+        const comment = comments[index];
+        result[comment.id] = {
+          ...comment
+        };
+      }
+      return result;
+    }
+    case VOTE_COMMENT_DOWN:
+    case VOTE_COMMENT_UP: {
+      const { comment } = action;
+
+      return {
+        ...state,
+        [comment.id]: comment
+      };
+    }
     default:
       return state;
   }
@@ -97,5 +139,6 @@ function posts(state = {}, action) {
 
 export default combineReducers({
   categories,
-  posts
+  posts,
+  comments
 });

@@ -28,20 +28,36 @@ Main Dark Grey: #383a3f
   );
 }
 /* --------------- COLORS --------------- */
-.pink-bkg {
+.udacity-bkg {
   background-color: #d81159 !important;
 }
 
-.orange-bkg {
+.redux-bkg {
   background-color: #ffbc42 !important;
 }
 
-.purple-bkg {
+.all-bkg {
   background-color: #8f2d56 !important;
 }
 
-.green-bkg {
+.react-bkg {
   background-color: #218380 !important;
+}
+
+.udacity-color {
+  color: #d81159 !important;
+}
+
+.redux-color {
+  color: #ffbc42 !important;
+}
+
+.all-color {
+  color: #8f2d56 !important;
+}
+
+.react-color {
+  color: #218380 !important;
 }
 
 /* --------------- POSTS HEADER --------------- */
@@ -242,7 +258,8 @@ Main Dark Grey: #383a3f
 }
 
 .post-icons:hover {
-  color: #a8a8a8;
+  color: #a8a8a8 !important;
+  cursor: pointer;
 }
 
 .post-body {
@@ -256,6 +273,7 @@ Main Dark Grey: #383a3f
   word-spacing: 5px;
   height: 48%;
   text-overflow: ellipsis;
+  text-align: justify;
 }
 
 .post-category-react-tag {
@@ -281,7 +299,13 @@ Main Dark Grey: #383a3f
 
 .post-rating-info {
   max-width: 150px;
-  margin-left: 20px;
+  position: absolute;
+  left: 20px;
+  bottom: 5px;
+  margin: 5px;
+  letter-spacing: 0.5px;
+  word-spacing: 4px;
+  text-align: center;
 }
 
 .post-comments {
@@ -303,6 +327,7 @@ Main Dark Grey: #383a3f
 
 .post-rating-icons:hover {
   color: #a8a8a8 !important;
+  cursor: pointer;
 }
 
 .add-post-button {
@@ -324,6 +349,107 @@ Main Dark Grey: #383a3f
 .add-post-button:hover {
   box-shadow: 0 8px 3px #d2d2d2;
   transform: scale(1.1);
+}
+
+/* --------------- POST DETAIL --------------- */
+
+.post-detail {
+  position: relative;
+  box-shadow: 0 2px 2px #d2d2d2;
+  min-height: 300px;
+  background: #fff;
+  margin: 50px auto 0 auto;
+}
+
+.post-detail-title {
+  margin: 20px auto 0 auto;
+  text-align: center;
+  white-space: normal;
+  width: 70%;
+  font-weight: 500;
+}
+
+.post-detail-body {
+  margin: 10px auto 10px auto;
+  padding: 0 10px 50px 10px;
+  font-size: 80%;
+  font-weight: 300;
+  text-align: start;
+  letter-spacing: 2px;
+  word-spacing: 5px;
+  min-height: 48%;
+  text-align: justify;
+}
+
+/* --------------- COMMENT --------------- */
+
+.comment {
+  position: relative;
+  min-height: 150px;
+  border-left: solid 3px #383a3f;
+  background: #fff;
+  margin: 0 auto 10px auto;
+}
+
+.comment-rating {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.comment-body {
+  padding: 10px 10px 10px 50px;
+  min-height: 150px;
+}
+
+.comment-body p {
+  font-size: 70%;
+  font-weight: 300;
+  text-align: start;
+  letter-spacing: 2px;
+  word-spacing: 5px;
+  text-align: justify;
+  padding-right: 20px;
+}
+
+.comment-title {
+  font-weight: 400 !important;
+  font-size: 80% !important;
+  margin-bottom: 5px;
+}
+
+.comment-data {
+  font-weight: 700 !important;
+  font-size: 50% !important;
+  margin-bottom: 15px;
+  letter-spacing: 1px !important;
+  word-spacing: 0 !important;
+}
+
+.comment-message {
+  margin-bottom: 10px;
+  min-height: 50px;
+}
+
+.comment-body a {
+  font-size: 60%;
+  font-weight: 300;
+  margin: 0 10px 0 0;
+  text-align: start;
+  letter-spacing: 2px;
+  color: #a8a8a8;
+  text-decoration: none;
+}
+
+.comment-body a:hover {
+  border-bottom: solid 2px #a8a8a8;
+  cursor: pointer;
+}
+
+.comment i:hover {
+  color: #a8a8a8 !important;
+  cursor: pointer !important;
 }
 
 /* ----------------- HEADINGS ----------------- */

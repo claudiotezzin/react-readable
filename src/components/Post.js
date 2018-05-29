@@ -71,11 +71,7 @@ class Post extends Component {
           <div className="post-footer">
             <p>{postInfo.author}</p>
             <p>
-              {postDate.getFullYear() +
-                "/" +
-                postDate.getMonth() +
-                "/" +
-                postDate.getDay() +
+              {postDate.toLocaleDateString() +
                 " - " +
                 postDate.getHours() +
                 ":" +
