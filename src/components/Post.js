@@ -46,7 +46,9 @@ class Post extends Component {
               />
               <i
                 className="icon ion-ios-close post-icons post-close-icon"
-                onClick={() => {}}
+                onClick={e => {
+                  e.stopPropagation();
+                }}
               />
             </div>
           </div>

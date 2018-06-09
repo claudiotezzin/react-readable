@@ -9,11 +9,16 @@ import CategoriesSelector from "components/CategoriesSelector";
 import AddButton from "components/AddButton";
 import Post from "components/Post";
 import Dropdown from "react-dropdown";
+import CreatePost from "components/CreatePost";
 
 const options = ["one", "two", "three"];
 const defaultOption = options[0];
 
 class PostPage extends Component {
+  state = {
+    isModalOpen: false
+  };
+
   showCategories = false;
 
   componentDidMount() {
@@ -30,8 +35,20 @@ class PostPage extends Component {
     this.forceUpdate();
   }
 
+  handleCloseModal = () => {
+    this.setState({
+      isModalOpen: false
+    });
+  };
+
+  handleAddButtonClicked = () => {
+    this.setState({
+      isModalOpen: true
+    });
+  };
+
   render() {
-    const { posts, match } = this.props;
+    const { posts, match, categories } = this.props;
 
     const selectedCategory =
       match.params.categoryName === undefined
@@ -41,6 +58,9 @@ class PostPage extends Component {
     if (posts === undefined || posts.length === 0) {
       return <div>LOADING...</div>;
     } else {
+      const currentColor = categories.find(cat => cat.name === selectedCategory)
+        .color;
+
       return (
         <Fragment>
           <div className="row">
@@ -51,6 +71,7 @@ class PostPage extends Component {
             <div className="posts-categories col span-1-of-2">
               <a
                 className="btn btn-categories"
+                style={{ backgroundColor: currentColor }}
                 onClick={() => this.onCategoryButtonClicked()}
               >
                 Categories
@@ -80,7 +101,17 @@ class PostPage extends Component {
 
           <CategoriesSelector show={this.showCategories} />
 
-          <AddButton />
+          <AddButton
+            categoryColor={currentColor}
+            handleAddButtonClicked={this.handleAddButtonClicked}
+          />
+
+          {this.state.isModalOpen === true && (
+            <CreatePost
+              handleCloseModal={this.handleCloseModal}
+              selectedCategory={selectedCategory}
+            />
+          )}
         </Fragment>
       );
     }
@@ -104,4 +135,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostPage);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PostPage);

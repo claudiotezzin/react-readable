@@ -1,4 +1,5 @@
 const api = "http://localhost:3001";
+const uuidv4 = require("uuid/v4");
 
 // Generate a unique token for storing your data on the backend server.
 let token = localStorage.token;
@@ -65,3 +66,23 @@ export const voteCommentDown = commentId =>
 
 export const getPostsComments = postId =>
   fetch(`${api}/posts/${postId}/comments`, { headers }).then(res => res.json());
+
+export const addPost = (title, body, author, category) =>
+  fetch(`${api}/posts`, {
+    method: "POST",
+    headers: {
+      ...headers,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      title,
+      body,
+      author,
+      category: category.toLowerCase(),
+      timestamp: Date.now(),
+      id: uuidv4()
+    })
+  }).then(res => {
+    console.log(res);
+    return res.json();
+  });

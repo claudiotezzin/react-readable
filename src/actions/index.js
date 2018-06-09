@@ -96,3 +96,13 @@ export const getPostComments = comments => ({
   type: FETCH_POST_COMMENTS,
   comments
 });
+
+export const addPost = (title, body, author, category) => dispatch =>
+  ReadableAPI.addPost(title, body, author, category).then(post =>
+    dispatch(postAdded(post))
+  );
+
+export const postAdded = post => ({
+  type: ADD_POST,
+  post
+});

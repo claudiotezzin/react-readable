@@ -8,7 +8,8 @@ import {
   FETCH_POST_BY_ID,
   FETCH_POST_COMMENTS,
   VOTE_COMMENT_DOWN,
-  VOTE_COMMENT_UP
+  VOTE_COMMENT_UP,
+  ADD_POST
 } from "../actions/index";
 
 import UdacityLogo from "assets/images/udacity.png";
@@ -97,6 +98,14 @@ function posts(state = {}, action) {
       };
     }
     case FETCH_POST_BY_ID: {
+      const { post } = action;
+
+      return {
+        ...state,
+        [post.id]: post
+      };
+    }
+    case ADD_POST: {
       const { post } = action;
 
       return {

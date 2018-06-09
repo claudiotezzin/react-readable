@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Comment from "components/Comment";
+import AddButton from "components/AddButton";
 
 import {
   fetchPost,
@@ -42,10 +43,7 @@ class PostDetail extends Component {
                     alt="Category Logo"
                   />
                 </div>
-                <h3 className="span-8-of-12 post-detail-title">
-                  {/*post.title*/}Title huuuuge, very big big and I do not want
-                  to let it wrap.
-                </h3>
+                <h3 className="span-8-of-12 post-detail-title">{post.title}</h3>
                 <div>
                   <i
                     className="icon ion-ios-create post-icons post-edit-icon"
@@ -60,18 +58,7 @@ class PostDetail extends Component {
               </div>
               <div className="line-separator" />
               <div className="span-8-of-12 post-detail-body">
-                <p>
-                  {/*post.body*/}Lorem Ipsum is simply dummy text of the
-                  printing and typesetting industry. Lorem Ipsum has been the
-                  industry's standard dummy text ever since the 1500s, when an
-                  unknown printer took a galley of type and scrambled it to make
-                  a type specimen book. It has survived not only five centuries,
-                  but also the leap into electronic typesetting, remaining
-                  essentially unchanged. It was popularised in the 1960s with
-                  the release of Letraset sheets containing Lorem Ipsum
-                  passages, and more recently with desktop publishing software
-                  like Aldus PageMaker including versions of Lorem Ipsum.
-                </p>
+                <p>{post.body}</p>
               </div>
               <div className="post-rating-info">
                 <i
@@ -105,7 +92,13 @@ class PostDetail extends Component {
               comment={comment}
               categoryColor={post.category.color}
             />
-          ))}}
+          ))}
+          <AddButton categoryColor={post.category.color} />
+          <i
+            className="icon ion-ios-arrow-round-back back-button"
+            style={{ color: post.category.color }}
+            onClick={this.props.history.goBack}
+          />
         </div>
       );
     }
@@ -138,4 +131,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostDetail);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PostDetail);
