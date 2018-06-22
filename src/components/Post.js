@@ -56,7 +56,11 @@ class Post extends Component {
                 className="icon ion-ios-close post-icons post-close-icon"
                 onClick={e => {
                   e.stopPropagation();
-                  this.props.deletePost(postInfo.id);
+                  if (
+                    window.confirm("Are you sure you wish to delete this post?")
+                  ) {
+                    this.props.deletePost(postInfo.id);
+                  }
                 }}
               />
             </div>
