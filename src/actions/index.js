@@ -106,3 +106,21 @@ export const postAdded = post => ({
   type: ADD_POST,
   post
 });
+
+export const updatePost = (postId, title, body, author, category) => dispatch =>
+  ReadableAPI.updatePost(postId, title, body, author, category).then(post =>
+    dispatch(postUpdated(post))
+  );
+
+export const postUpdated = post => ({
+  type: UPDATE_POST,
+  post
+});
+
+export const deletePost = postId => dispatch =>
+  ReadableAPI.removePost(postId).then(post => dispatch(postDeleted(post)));
+
+export const postDeleted = post => ({
+  type: REMOVE_POST,
+  post
+});

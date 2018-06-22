@@ -19,6 +19,7 @@ class PostPage extends Component {
     isModalOpen: false
   };
 
+  postToEdit = undefined;
   showCategories = false;
 
   componentDidMount() {
@@ -36,12 +37,20 @@ class PostPage extends Component {
   }
 
   handleCloseModal = () => {
+    this.postToEdit = undefined;
     this.setState({
       isModalOpen: false
     });
   };
 
   handleAddButtonClicked = () => {
+    this.setState({
+      isModalOpen: true
+    });
+  };
+
+  handleEditPostButtonClicked = post => {
+    this.postToEdit = post;
     this.setState({
       isModalOpen: true
     });
@@ -97,7 +106,13 @@ class PostPage extends Component {
                 selectedCategory === "all" ||
                 post.category.name === selectedCategory
             )
-            .map(post => <Post key={post.id} postInfo={post} />)}
+            .map(post => (
+              <Post
+                key={post.id}
+                postInfo={post}
+                handleEditPostButtonClicked={this.handleEditPostButtonClicked}
+              />
+            ))}
 
           <CategoriesSelector show={this.showCategories} />
 
@@ -110,6 +125,8 @@ class PostPage extends Component {
             <CreatePost
               handleCloseModal={this.handleCloseModal}
               selectedCategory={selectedCategory}
+              isEditMode={this.postToEdit === undefined ? false : true}
+              post={this.postToEdit}
             />
           )}
         </Fragment>

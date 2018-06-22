@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import { votePostUp, votePostDown } from "../actions";
+import { votePostUp, votePostDown, deletePost } from "../actions";
 
 class Post extends Component {
   state = {
@@ -15,7 +15,12 @@ class Post extends Component {
   };
 
   render() {
-    const { voteUp, voteDown, postInfo } = this.props;
+    const {
+      voteUp,
+      voteDown,
+      postInfo,
+      handleEditPostButtonClicked
+    } = this.props;
     const postDate = new Date(postInfo.timestamp);
 
     if (this.state.redirect) {
@@ -42,12 +47,16 @@ class Post extends Component {
               <i
                 className="icon ion-ios-create post-icons post-edit-icon"
                 style={{ color: postInfo.category.color }}
-                onClick={() => {}}
+                onClick={e => {
+                  e.stopPropagation();
+                  handleEditPostButtonClicked(postInfo);
+                }}
               />
               <i
                 className="icon ion-ios-close post-icons post-close-icon"
                 onClick={e => {
                   e.stopPropagation();
+                  this.props.deletePost(postInfo.id);
                 }}
               />
             </div>
@@ -87,14 +96,19 @@ class Post extends Component {
 }
 
 Post.propTypes = {
-  postInfo: PropTypes.object.isRequired
+  postInfo: PropTypes.object.isRequired,
+  handleEditPostButtonClicked: PropTypes.func.isRequired
 };
 
 function mapDispatchToProps(dispatch) {
   return {
     voteUp: postId => dispatch(votePostUp(postId)),
-    voteDown: postId => dispatch(votePostDown(postId))
+    voteDown: postId => dispatch(votePostDown(postId)),
+    deletePost: postId => dispatch(deletePost(postId))
   };
 }
 
-export default connect(null, mapDispatchToProps)(Post);
+export default connect(
+  null,
+  mapDispatchToProps
+)(Post);

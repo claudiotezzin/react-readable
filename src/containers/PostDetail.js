@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Comment from "components/Comment";
 import AddButton from "components/AddButton";
+import CreateComment from "components/CreateComment";
 
 import {
   fetchPost,
@@ -12,11 +13,27 @@ import {
 } from "../actions";
 
 class PostDetail extends Component {
+  state = {
+    isModalOpen: false
+  };
+
   componentDidMount() {
     this.props.getCategories();
     this.props.getPost(this.props.match.params.postId);
     this.props.getComments(this.props.match.params.postId);
   }
+
+  handleAddButtonClicked = () => {
+    this.setState({
+      isModalOpen: true
+    });
+  };
+
+  handleCloseModal = () => {
+    this.setState({
+      isModalOpen: false
+    });
+  };
 
   render() {
     const { post, voteUp, voteDown, comments } = this.props;
@@ -93,12 +110,22 @@ class PostDetail extends Component {
               categoryColor={post.category.color}
             />
           ))}
-          <AddButton categoryColor={post.category.color} />
+          <AddButton
+            categoryColor={post.category.color}
+            handleAddButtonClicked={this.handleAddButtonClicked}
+          />
           <i
             className="icon ion-ios-arrow-round-back back-button"
             style={{ color: post.category.color }}
             onClick={this.props.history.goBack}
           />
+
+          {this.state.isModalOpen === true && (
+            <CreateComment
+              handleCloseModal={this.handleCloseModal}
+              selectedCategory={"all"}
+            />
+          )}
         </div>
       );
     }

@@ -82,7 +82,29 @@ export const addPost = (title, body, author, category) =>
       timestamp: Date.now(),
       id: uuidv4()
     })
-  }).then(res => {
-    console.log(res);
-    return res.json();
-  });
+  }).then(res => res.json());
+
+export const updatePost = (postId, title, body, author, category) =>
+  fetch(`${api}/posts/${postId}`, {
+    method: "PUT",
+    headers: {
+      ...headers,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      title,
+      body,
+      author,
+      category: category.toLowerCase(),
+      timestamp: Date.now()
+    })
+  }).then(res => res.json());
+
+export const removePost = postId =>
+  fetch(`${api}/posts/${postId}`, {
+    method: "DELETE",
+    headers: {
+      ...headers,
+      "Content-Type": "application/json"
+    }
+  }).then(res => res.json());

@@ -9,7 +9,9 @@ import {
   FETCH_POST_COMMENTS,
   VOTE_COMMENT_DOWN,
   VOTE_COMMENT_UP,
-  ADD_POST
+  ADD_POST,
+  UPDATE_POST,
+  REMOVE_POST
 } from "../actions/index";
 
 import UdacityLogo from "assets/images/udacity.png";
@@ -112,6 +114,22 @@ function posts(state = {}, action) {
         ...state,
         [post.id]: post
       };
+    }
+    case UPDATE_POST: {
+      const { post } = action;
+
+      return {
+        ...state,
+        [post.id]: post
+      };
+    }
+    case REMOVE_POST: {
+      const { post } = action;
+
+      let result = { ...state };
+      delete result[post.id];
+
+      return result;
     }
     default:
       return state;

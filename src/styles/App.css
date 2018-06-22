@@ -527,6 +527,7 @@ header img {
   border-radius: 10px;
   background-color: #fff;
   color: #383a3f;
+  outline: none;
 }
 
 .overlay {

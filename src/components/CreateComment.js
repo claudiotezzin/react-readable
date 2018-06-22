@@ -4,27 +4,23 @@ import { connect } from "react-redux";
 import Modal from "react-modal";
 import { DebounceInput } from "react-debounce-input";
 import Dropdown from "react-dropdown";
-import { addPost, updatePost } from "actions";
+import { addPost } from "actions";
 
-class CreatePost extends Component {
+class CreateComment extends Component {
   state = {
-    title: this.props.isEditMode === true ? this.props.post.title : "",
-    body: this.props.isEditMode === true ? this.props.post.body : "",
-    name: this.props.isEditMode === true ? this.props.post.author : "",
+    title: "",
+    post: "",
+    name: "",
     category:
-      this.props.isEditMode === true
-        ? this.props.post.category.name
-        : this.props.selectedCategory === "all"
-          ? ""
-          : this.props.selectedCategory
+      this.props.selectedCategory === "all" ? "" : this.props.selectedCategory
   };
 
   handleAddPost = () => {
-    const { title, body, name, category } = this.state;
+    const { title, post, name, category } = this.state;
 
     if (
       title === "" ||
-      body === "" ||
+      post === "" ||
       name === "" ||
       category === "" ||
       category.toLowerCase() === "all"
@@ -35,37 +31,12 @@ class CreatePost extends Component {
       return;
     }
 
-    this.props.addNewPost(title, body, name, category);
-    this.props.handleCloseModal();
-  };
-
-  handleUpdatePost = () => {
-    const { title, body, name, category } = this.state;
-
-    if (
-      title === "" ||
-      body === "" ||
-      name === "" ||
-      category === "" ||
-      category.toLowerCase() === "all"
-    ) {
-      window.alert(
-        "You need to fill all fields at the form to send a new post!!!"
-      );
-      return;
-    }
-
-    this.props.updatePost(this.props.post.id, title, body, name, category);
+    this.props.addNewPost(title, post, name, category);
     this.props.handleCloseModal();
   };
 
   render() {
-    const {
-      handleCloseModal,
-      selectedCategory,
-      categories,
-      isEditMode
-    } = this.props;
+    const { handleCloseModal, selectedCategory, categories } = this.props;
 
     const categoriesNames = Object.keys(categories)
       .map(key => categories[key].name)
@@ -80,14 +51,13 @@ class CreatePost extends Component {
         className="modal"
         overlayClassName="overlay"
       >
-        {isEditMode === true ? <p>Edit Post</p> : <p>New Post</p>}
+        <p>New Post</p>
 
         <div className="row">
           <DebounceInput
-            minLength={1}
+            minLength={2}
             debounceTimeout={100}
             placeholder="Type a title here..."
-            value={this.state.title}
             onChange={event => this.setState({ title: event.target.value })}
           />
 
@@ -96,18 +66,16 @@ class CreatePost extends Component {
             rows="7"
             element="textarea"
             forceNotifyByEnter={false}
-            minLength={1}
+            minLength={0}
             debounceTimeout={100}
-            value={this.state.body}
             placeholder="What do you want to talk about this topic..."
-            onChange={e => this.setState({ body: e.target.value })}
+            onChange={e => this.setState({ post: e.target.value })}
           />
 
           <DebounceInput
-            minLength={1}
+            minLength={2}
             debounceTimeout={100}
             placeholder="What's your name?"
-            value={this.state.name}
             onChange={event => this.setState({ name: event.target.value })}
           />
         </div>
@@ -124,15 +92,9 @@ class CreatePost extends Component {
             <div className="category-selected">{selectedCategory}</div>
           )}
         </div>
-        {isEditMode === true ? (
-          <button className="btn add" onClick={() => this.handleUpdatePost()}>
-            Update
-          </button>
-        ) : (
-          <button className="btn add" onClick={() => this.handleAddPost()}>
-            Add
-          </button>
-        )}
+        <button className="btn add" onClick={() => this.handleAddPost()}>
+          Add
+        </button>
         <button className="btn cancel" onClick={handleCloseModal}>
           Cancel
         </button>
@@ -142,10 +104,9 @@ class CreatePost extends Component {
   "";
 }
 
-CreatePost.propTypes = {
+CreateComment.propTypes = {
   handleCloseModal: PropTypes.func.isRequired,
-  selectedCategory: PropTypes.string.isRequired,
-  isEditMode: PropTypes.bool.isRequired
+  selectedCategory: PropTypes.string.isRequired
 };
 
 function mapStateToProps({ categories }) {
@@ -157,13 +118,11 @@ function mapStateToProps({ categories }) {
 function mapDispatchToProps(dispatch) {
   return {
     addNewPost: (title, body, author, category) =>
-      dispatch(addPost(title, body, author, category)),
-    updatePost: (postId, title, body, author, category) =>
-      dispatch(updatePost(postId, title, body, author, category))
+      dispatch(addPost(title, body, author, category))
   };
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreatePost);
+)(CreateComment);
