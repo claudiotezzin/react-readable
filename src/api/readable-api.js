@@ -13,11 +13,17 @@ const headers = {
   Authorization: token
 };
 
+/****************************************************
+// CATEGORIES
+****************************************************/
 export const getAllCategories = () =>
   fetch(`${api}/categories`, { headers })
     .then(res => res.json())
     .then(data => data.categories);
 
+/****************************************************
+// POSTS
+****************************************************/
 export const getAllPosts = () =>
   fetch(`${api}/posts`, { headers }).then(res => res.json());
 
@@ -36,26 +42,6 @@ export const votePostUp = postId =>
 
 export const votePostDown = postId =>
   fetch(`${api}/posts/${postId}`, {
-    method: "POST",
-    headers: {
-      ...headers,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ option: "downVote" })
-  }).then(res => res.json());
-
-export const voteCommentUp = commentId =>
-  fetch(`${api}/comments/${commentId}`, {
-    method: "POST",
-    headers: {
-      ...headers,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ option: "upVote" })
-  }).then(res => res.json());
-
-export const voteCommentDown = commentId =>
-  fetch(`${api}/comments/${commentId}`, {
     method: "POST",
     headers: {
       ...headers,
@@ -107,6 +93,29 @@ export const removePost = postId =>
       ...headers,
       "Content-Type": "application/json"
     }
+  }).then(res => res.json());
+
+/****************************************************
+// COMMENTS
+****************************************************/
+export const voteCommentUp = commentId =>
+  fetch(`${api}/comments/${commentId}`, {
+    method: "POST",
+    headers: {
+      ...headers,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ option: "upVote" })
+  }).then(res => res.json());
+
+export const voteCommentDown = commentId =>
+  fetch(`${api}/comments/${commentId}`, {
+    method: "POST",
+    headers: {
+      ...headers,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ option: "downVote" })
   }).then(res => res.json());
 
 export const addComment = (postId, body, author) =>
