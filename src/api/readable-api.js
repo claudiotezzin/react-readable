@@ -108,3 +108,42 @@ export const removePost = postId =>
       "Content-Type": "application/json"
     }
   }).then(res => res.json());
+
+export const addComment = (postId, body, author) =>
+  fetch(`${api}/comments`, {
+    method: "POST",
+    headers: {
+      ...headers,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      body,
+      author,
+      parentId: postId,
+      timestamp: Date.now(),
+      id: uuidv4()
+    })
+  }).then(res => res.json());
+
+export const updateComment = (commentId, body, author) =>
+  fetch(`${api}/comments/${commentId}`, {
+    method: "PUT",
+    headers: {
+      ...headers,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      body,
+      author,
+      timestamp: Date.now()
+    })
+  }).then(res => res.json());
+
+export const removeComment = commentId =>
+  fetch(`${api}/comments/${commentId}`, {
+    method: "DELETE",
+    headers: {
+      ...headers,
+      "Content-Type": "application/json"
+    }
+  }).then(res => res.json());

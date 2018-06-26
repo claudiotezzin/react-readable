@@ -11,7 +11,10 @@ import {
   VOTE_COMMENT_UP,
   ADD_POST,
   UPDATE_POST,
-  REMOVE_POST
+  REMOVE_POST,
+  ADD_COMMENT,
+  UPDATE_COMMENT,
+  REMOVE_COMMENT
 } from "../actions/index";
 
 import UdacityLogo from "assets/images/udacity.png";
@@ -158,6 +161,30 @@ function comments(state = {}, action) {
         ...state,
         [comment.id]: comment
       };
+    }
+    case ADD_COMMENT: {
+      const { comment } = action;
+
+      return {
+        ...state,
+        [comment.id]: comment
+      };
+    }
+    case UPDATE_COMMENT: {
+      const { comment } = action;
+
+      return {
+        ...state,
+        [comment.id]: comment
+      };
+    }
+    case REMOVE_COMMENT: {
+      const { comment } = action;
+
+      let result = { ...state };
+      delete result[comment.id];
+
+      return result;
     }
     default:
       return state;

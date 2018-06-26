@@ -3,44 +3,44 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Modal from "react-modal";
 import { DebounceInput } from "react-debounce-input";
-import Dropdown from "react-dropdown";
-import { addPost } from "actions";
+import { addComment, updateComment } from "actions";
 
 class CreateComment extends Component {
   state = {
-    title: "",
-    post: "",
-    name: "",
-    category:
-      this.props.selectedCategory === "all" ? "" : this.props.selectedCategory
+    body: this.props.isEditMode === true ? this.props.comment.body : "",
+    author: this.props.isEditMode === true ? this.props.comment.author : ""
   };
 
-  handleAddPost = () => {
-    const { title, post, name, category } = this.state;
+  handleAddComment = () => {
+    const { body, author } = this.state;
 
-    if (
-      title === "" ||
-      post === "" ||
-      name === "" ||
-      category === "" ||
-      category.toLowerCase() === "all"
-    ) {
+    if (body === "" || author === "") {
       window.alert(
-        "You need to fill all fields at the form to send a new post!!!"
+        "You need to fill all fields at the form to send a new comment!!!"
       );
       return;
     }
 
-    this.props.addNewPost(title, post, name, category);
+    this.props.addNewComment(this.props.postId, body, author);
+    this.props.handleCloseModal();
+  };
+
+  handleUpdateComment = () => {
+    const { body, author } = this.state;
+
+    if (body === "" || author === "") {
+      window.alert(
+        "You need to fill all fields at the form to edit the comment!!!"
+      );
+      return;
+    }
+
+    this.props.updateComment(this.props.comment.id, body, author);
     this.props.handleCloseModal();
   };
 
   render() {
-    const { handleCloseModal, selectedCategory, categories } = this.props;
-
-    const categoriesNames = Object.keys(categories)
-      .map(key => categories[key].name)
-      .filter(name => name !== "all");
+    const { handleCloseModal, isEditMode } = this.props;
 
     return (
       <Modal
@@ -51,50 +51,41 @@ class CreateComment extends Component {
         className="modal"
         overlayClassName="overlay"
       >
-        <p>New Post</p>
+        {isEditMode === true ? <p>Edit Comment</p> : <p>New Comment</p>}
 
         <div className="row">
-          <DebounceInput
-            minLength={2}
-            debounceTimeout={100}
-            placeholder="Type a title here..."
-            onChange={event => this.setState({ title: event.target.value })}
-          />
-
           <DebounceInput
             cols="60"
             rows="7"
             element="textarea"
             forceNotifyByEnter={false}
-            minLength={0}
+            minLength={1}
             debounceTimeout={100}
-            placeholder="What do you want to talk about this topic..."
-            onChange={e => this.setState({ post: e.target.value })}
+            value={this.state.body}
+            placeholder="Please, leave your comment here"
+            onChange={e => this.setState({ body: e.target.value })}
           />
 
           <DebounceInput
-            minLength={2}
+            minLength={1}
             debounceTimeout={100}
             placeholder="What's your name?"
-            onChange={event => this.setState({ name: event.target.value })}
+            value={this.state.author}
+            onChange={event => this.setState({ author: event.target.value })}
           />
         </div>
-        <div className="row">
-          {selectedCategory === "all" ? (
-            <Dropdown
-              className="category-dropdown"
-              options={categoriesNames}
-              value={this.state.category}
-              onChange={event => this.setState({ category: event.value })}
-              placeholder="category"
-            />
-          ) : (
-            <div className="category-selected">{selectedCategory}</div>
-          )}
-        </div>
-        <button className="btn add" onClick={() => this.handleAddPost()}>
-          Add
-        </button>
+        {isEditMode === true ? (
+          <button
+            className="btn add"
+            onClick={() => this.handleUpdateComment()}
+          >
+            Update
+          </button>
+        ) : (
+          <button className="btn add" onClick={() => this.handleAddComment()}>
+            Add
+          </button>
+        )}
         <button className="btn cancel" onClick={handleCloseModal}>
           Cancel
         </button>
@@ -106,23 +97,20 @@ class CreateComment extends Component {
 
 CreateComment.propTypes = {
   handleCloseModal: PropTypes.func.isRequired,
-  selectedCategory: PropTypes.string.isRequired
+  postId: PropTypes.string.isRequired,
+  isEditMode: PropTypes.bool.isRequired
 };
-
-function mapStateToProps({ categories }) {
-  return {
-    categories: Object.keys(categories).map(key => categories[key])
-  };
-}
 
 function mapDispatchToProps(dispatch) {
   return {
-    addNewPost: (title, body, author, category) =>
-      dispatch(addPost(title, body, author, category))
+    addNewComment: (postId, body, author) =>
+      dispatch(addComment(postId, body, author)),
+    updateComment: (commentId, body, author) =>
+      dispatch(updateComment(commentId, body, author))
   };
 }
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(CreateComment);

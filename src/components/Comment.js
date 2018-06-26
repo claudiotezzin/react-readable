@@ -2,9 +2,16 @@ import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { voteCommentUp, voteCommentDown } from "../actions";
+import { voteCommentUp, voteCommentDown, deleteComment } from "../actions";
 
-const Comment = ({ comment, categoryColor, voteUp, voteDown }) => {
+const Comment = ({
+  comment,
+  categoryColor,
+  handleEditCommentButtonClicked,
+  voteUp,
+  voteDown,
+  deleteComment
+}) => {
   const commentDate = new Date(comment.timestamp);
 
   return (
@@ -37,10 +44,26 @@ const Comment = ({ comment, categoryColor, voteUp, voteDown }) => {
                 commentDate.toLocaleTimeString()}
             </p>
             <p className="comment-message">{comment.body}</p>
-            <a href="">
+            <a
+              onClick={e => {
+                e.stopPropagation();
+                handleEditCommentButtonClicked(comment);
+              }}
+            >
               <b>edit</b>
             </a>
-            <a href="">
+            <a
+              onClick={e => {
+                e.stopPropagation();
+                if (
+                  window.confirm(
+                    "Are you sure you wish to delete this comment?"
+                  )
+                ) {
+                  deleteComment(comment.id);
+                }
+              }}
+            >
               <b>delete</b>
             </a>
           </div>
@@ -52,14 +75,19 @@ const Comment = ({ comment, categoryColor, voteUp, voteDown }) => {
 
 Comment.propTypes = {
   comment: PropTypes.object.isRequired,
-  categoryColor: PropTypes.string.isRequired
+  categoryColor: PropTypes.string.isRequired,
+  handleEditCommentButtonClicked: PropTypes.func.isRequired
 };
 
 function mapDispatchToProps(dispatch) {
   return {
     voteUp: commentId => dispatch(voteCommentUp(commentId)),
-    voteDown: commentId => dispatch(voteCommentDown(commentId))
+    voteDown: commentId => dispatch(voteCommentDown(commentId)),
+    deleteComment: commentId => dispatch(deleteComment(commentId))
   };
 }
 
-export default connect(null, mapDispatchToProps)(Comment);
+export default connect(
+  null,
+  mapDispatchToProps
+)(Comment);

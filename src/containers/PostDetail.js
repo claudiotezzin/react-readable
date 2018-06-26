@@ -17,6 +17,8 @@ class PostDetail extends Component {
     isModalOpen: false
   };
 
+  commentToEdit = undefined;
+
   componentDidMount() {
     this.props.getCategories();
     this.props.getPost(this.props.match.params.postId);
@@ -30,8 +32,16 @@ class PostDetail extends Component {
   };
 
   handleCloseModal = () => {
+    this.commentToEdit = undefined;
     this.setState({
       isModalOpen: false
+    });
+  };
+
+  handleEditCommentButtonClicked = comment => {
+    this.commentToEdit = comment;
+    this.setState({
+      isModalOpen: true
     });
   };
 
@@ -108,6 +118,9 @@ class PostDetail extends Component {
               key={comment.id}
               comment={comment}
               categoryColor={post.category.color}
+              handleEditCommentButtonClicked={
+                this.handleEditCommentButtonClicked
+              }
             />
           ))}
           <AddButton
@@ -123,7 +136,9 @@ class PostDetail extends Component {
           {this.state.isModalOpen === true && (
             <CreateComment
               handleCloseModal={this.handleCloseModal}
-              selectedCategory={"all"}
+              postId={post.id}
+              isEditMode={this.commentToEdit === undefined ? false : true}
+              comment={this.commentToEdit}
             />
           )}
         </div>

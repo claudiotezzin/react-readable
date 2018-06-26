@@ -124,3 +124,33 @@ export const postDeleted = post => ({
   type: REMOVE_POST,
   post
 });
+
+export const addComment = (postId, body, author) => dispatch =>
+  ReadableAPI.addComment(postId, body, author).then(comment =>
+    dispatch(commentAdded(comment))
+  );
+
+export const commentAdded = comment => ({
+  type: ADD_COMMENT,
+  comment
+});
+
+export const updateComment = (commentId, body, author) => dispatch =>
+  ReadableAPI.updateComment(commentId, body, author).then(comment =>
+    dispatch(commentUpdated(comment))
+  );
+
+export const commentUpdated = comment => ({
+  type: UPDATE_COMMENT,
+  comment
+});
+
+export const deleteComment = commentId => dispatch =>
+  ReadableAPI.removeComment(commentId).then(comment =>
+    dispatch(commentDeleted(comment))
+  );
+
+export const commentDeleted = comment => ({
+  type: REMOVE_COMMENT,
+  comment
+});

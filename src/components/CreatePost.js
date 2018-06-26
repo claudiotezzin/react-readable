@@ -50,7 +50,7 @@ class CreatePost extends Component {
       category.toLowerCase() === "all"
     ) {
       window.alert(
-        "You need to fill all fields at the form to send a new post!!!"
+        "You need to fill all fields at the form to edit the post!!!"
       );
       return;
     }
