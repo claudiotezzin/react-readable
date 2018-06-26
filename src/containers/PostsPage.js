@@ -11,12 +11,12 @@ import Post from "components/Post";
 import Dropdown from "react-dropdown";
 import CreatePost from "components/CreatePost";
 
-const options = ["one", "two", "three"];
-const defaultOption = options[0];
+const options = ["Date", "Votes"];
 
 class PostPage extends Component {
   state = {
-    isModalOpen: false
+    isModalOpen: false,
+    sortePostBy: options[0]
   };
 
   postToEdit = undefined;
@@ -56,8 +56,40 @@ class PostPage extends Component {
     });
   };
 
+  compareByDate = (a, b) => {
+    if (a.timestamp < b.timestamp) {
+      return 1;
+    }
+
+    if (a.timestamp > b.timestamp) {
+      return -1;
+    }
+
+    return 0;
+  };
+
+  compareByVotes = (a, b) => {
+    if (a.voteScore < b.voteScore) {
+      return 1;
+    }
+
+    if (a.voteScore > b.voteScore) {
+      return -1;
+    }
+
+    return 0;
+  };
+
   render() {
     const { posts, match, categories } = this.props;
+
+    posts.sort((a, b) => {
+      if (this.state.sortePostBy === "Date") {
+        return this.compareByDate(a, b);
+      } else {
+        return this.compareByVotes(a, b);
+      }
+    });
 
     const selectedCategory =
       match.params.categoryName === undefined
@@ -93,8 +125,8 @@ class PostPage extends Component {
               <Dropdown
                 className="posts-filter-dropdown"
                 options={options}
-                onChange={() => {}}
-                value={defaultOption}
+                onChange={e => this.setState({ sortePostBy: e.value })}
+                value={this.state.sortePostBy}
                 placeholder="Select an option"
               />
             </div>

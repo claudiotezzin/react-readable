@@ -73,13 +73,19 @@ class Post extends Component {
             <i
               className="icon ion-ios-arrow-down post-rating-icons"
               style={{ color: postInfo.category.color }}
-              onClick={() => voteDown(postInfo.id)}
+              onClick={e => {
+                e.stopPropagation();
+                voteDown(postInfo.id);
+              }}
             />
             <div className="post-rating-value">{postInfo.voteScore}</div>
             <i
               className="icon ion-ios-arrow-up post-rating-icons"
               style={{ color: postInfo.category.color }}
-              onClick={() => voteUp(postInfo.id)}
+              onClick={e => {
+                e.stopPropagation();
+                voteUp(postInfo.id);
+              }}
             />
             <p className="post-comments">{postInfo.commentCount} comments</p>
           </div>
