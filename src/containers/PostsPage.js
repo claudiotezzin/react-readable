@@ -10,6 +10,7 @@ import AddButton from "components/AddButton";
 import Post from "components/Post";
 import Dropdown from "react-dropdown";
 import CreatePost from "components/CreatePost";
+import { DebounceInput } from "react-debounce-input";
 
 const options = ["Date", "Votes"];
 
@@ -120,7 +121,6 @@ class PostPage extends Component {
             </div>
           </div>
           <div className="row">
-            <div className="posts-search col span-6-of-8">SEARCH</div>
             <div className="posts-filter col span-2-of-8">
               <Dropdown
                 className="posts-filter-dropdown"

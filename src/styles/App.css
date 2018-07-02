@@ -95,15 +95,8 @@ Main Dark Grey: #383a3f
   color: #383a3f;
 }
 
-.posts-search {
-  text-align: right;
-  display: inline-block;
-  margin-top: 20px;
-}
-
 .posts-filter {
-  display: inline-block;
-  margin-bottom: 40px;
+  float: right;
 }
 
 .posts-filter-dropdown {
