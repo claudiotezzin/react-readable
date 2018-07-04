@@ -2,6 +2,7 @@
   "name": "react-readable",
   "version": "1.0.0",
   "private": false,
+  "homepage": "http://claudiotezzin.github.io/readable",
   "dependencies": {
     "prop-types": "^15.6.1",
     "react": "^16.4.0",
@@ -20,12 +21,15 @@
   "devDependencies": {
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
+    "gh-pages": "^1.2.0",
     "normalize.css": "^8.0.0"
   },
   "scripts": {
     "start": "NODE_PATH=src react-scripts start",
     "build": "NODE_PATH=src react-scripts build",
     "test": "NODE_PATH=src react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   }
 }
