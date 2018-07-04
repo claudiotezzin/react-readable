@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 const Header = ({ goHome }) => {
   return (
     <header>
-      <Link to="/" onClick={() => goHome}>
+      <Link to="/">
         <img src={logo} alt="Readable Logo" />
       </Link>
     </header>
@@ -20,4 +20,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(null, mapDispatchToProps)(Header);
+export default connect(
+  null,
+  mapDispatchToProps
+)(Header);

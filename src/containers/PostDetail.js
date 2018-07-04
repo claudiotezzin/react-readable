@@ -3,6 +3,10 @@ import { connect } from "react-redux";
 import Comment from "components/Comment";
 import AddButton from "components/AddButton";
 import CreateComment from "components/CreateComment";
+import Post from "components/Post";
+import CreatePost from "components/CreatePost";
+import { Redirect } from "react-router-dom";
+import ReactLoading from "react-loading";
 
 import {
   fetchPost,
@@ -11,108 +15,87 @@ import {
   votePostDown,
   fetchPostComments
 } from "../actions";
+import ErrorComponent from "../components/ErrorComponent";
 
 class PostDetail extends Component {
   state = {
-    isModalOpen: false
+    isCommentModalOpen: false,
+    isPostModalOpen: false,
+    isLoading: true
   };
 
   commentToEdit = undefined;
+  postToEdit = undefined;
 
   componentDidMount() {
-    this.props.getCategories();
-    this.props.getPost(this.props.match.params.postId);
-    this.props.getComments(this.props.match.params.postId);
+    Promise.all([
+      this.props.getCategories(),
+      this.props.getPost(this.props.match.params.postId),
+      this.props.getComments(this.props.match.params.postId)
+    ]).then(() => {
+      console.log("I did everything!");
+      this.setState({ isLoading: false });
+    });
   }
 
   handleAddButtonClicked = () => {
     this.setState({
-      isModalOpen: true
+      isCommentModalOpen: true
     });
   };
 
   handleCloseModal = () => {
     this.commentToEdit = undefined;
+    this.postToEdit = undefined;
     this.setState({
-      isModalOpen: false
+      isCommentModalOpen: false,
+      isPostModalOpen: false
     });
   };
 
   handleEditCommentButtonClicked = comment => {
     this.commentToEdit = comment;
     this.setState({
-      isModalOpen: true
+      isCommentModalOpen: true
+    });
+  };
+
+  handleEditPostButtonClicked = post => {
+    this.postToEdit = post;
+    this.setState({
+      isPostModalOpen: true
     });
   };
 
   render() {
-    const { post, voteUp, voteDown, comments } = this.props;
+    const { posts, comments } = this.props;
 
-    if (
-      post === undefined ||
-      post.category === undefined ||
-      comments === undefined
-    ) {
-      return <div>LOADING...</div>;
+    const post = posts.find(p => p.id === this.props.match.params.postId);
+    if (this.state.isLoading === true) {
+      return (
+        <div className="row">
+          <ReactLoading
+            type="spinningBubbles"
+            color="#D81159"
+            className="spinner"
+            height={367}
+            width={75}
+          />
+        </div>
+      );
+    } else if (post === undefined) {
+      return <ErrorComponent message={`This post was not found!`} />;
+    } else if (post.deleted === true) {
+      return <Redirect push to={"/"} />;
     } else {
-      const postDate = new Date(post.timestamp);
-
       return (
         <div>
-          <div className="row">
-            <div className="span-10-of-12 post-detail">
-              <div className="row">
-                <div className="post-tag">
-                  <img
-                    className="post-tag-icon"
-                    style={{ backgroundColor: post.category.color }}
-                    src={post.category.logo}
-                    alt="Category Logo"
-                  />
-                </div>
-                <h3 className="span-8-of-12 post-detail-title">{post.title}</h3>
-                <div>
-                  <i
-                    className="icon ion-ios-create post-icons post-edit-icon"
-                    style={{ color: post.category.color }}
-                    onClick={() => {}}
-                  />
-                  <i
-                    className="icon ion-ios-close post-icons post-close-icon"
-                    onClick={() => {}}
-                  />
-                </div>
-              </div>
-              <div className="line-separator" />
-              <div className="span-8-of-12 post-detail-body">
-                <p>{post.body}</p>
-              </div>
-              <div className="post-rating-info">
-                <i
-                  className="icon ion-ios-arrow-down post-rating-icons"
-                  style={{ color: post.category.color }}
-                  onClick={() => voteDown(post.id)}
-                />
-                <div className="post-rating-value">{post.voteScore}</div>
-                <i
-                  className="icon ion-ios-arrow-up post-rating-icons"
-                  style={{ color: post.category.color }}
-                  onClick={() => voteUp(post.id)}
-                />
-                <p className="post-comments">{post.commentCount} comments</p>
-              </div>
-              <div className="post-footer">
-                <p>{post.author}</p>
-                <p>
-                  {postDate.toLocaleDateString() +
-                    " - " +
-                    postDate.getHours() +
-                    ":" +
-                    ("0" + postDate.getMinutes()).substr(-2)}
-                </p>
-              </div>
-            </div>
-          </div>
+          <Post
+            key={post.id}
+            postInfo={post}
+            isClickable={false}
+            handleEditPostButtonClicked={this.handleEditPostButtonClicked}
+          />
           {comments.map(comment => (
             <Comment
               key={comment.id}
@@ -133,12 +116,21 @@ class PostDetail extends Component {
             onClick={this.props.history.goBack}
           />
 
-          {this.state.isModalOpen === true && (
+          {this.state.isCommentModalOpen === true && (
             <CreateComment
               handleCloseModal={this.handleCloseModal}
               postId={post.id}
               isEditMode={this.commentToEdit === undefined ? false : true}
               comment={this.commentToEdit}
+            />
+          )}
+
+          {this.state.isPostModalOpen === true && (
+            <CreatePost
+              handleCloseModal={this.handleCloseModal}
+              selectedCategory={post.category.name}
+              isEditMode={this.postToEdit === undefined ? false : true}
+              post={this.postToEdit}
             />
           )}
         </div>
@@ -147,20 +139,14 @@ class PostDetail extends Component {
   }
 }
 
-function mapStateToProps({ categories, posts, comments }, ownProps) {
-  const post = posts[ownProps.match.params.postId];
-
-  if (post === undefined) {
-    return {};
-  } else {
-    return {
-      post: {
-        ...post,
-        category: categories[post.category]
-      },
-      comments: Object.keys(comments).map(key => comments[key])
-    };
-  }
+function mapStateToProps({ categories, posts, comments }) {
+  return {
+    posts: Object.keys(posts).map(key => ({
+      ...posts[key],
+      category: categories[posts[key].category]
+    })),
+    comments: Object.keys(comments).map(key => comments[key])
+  };
 }
 
 function mapDispatchToProps(dispatch) {

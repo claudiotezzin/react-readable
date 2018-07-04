@@ -21,10 +21,12 @@ export const getPosts = posts => ({
 export const fetchPost = id => dispatch =>
   ReadableAPI.getPost(id).then(post => dispatch(getPost(post)));
 
-export const getPost = post => ({
-  type: FETCH_POST_BY_ID,
-  post
-});
+export const getPost = post => {
+  return {
+    type: FETCH_POST_BY_ID,
+    post
+  };
+};
 
 export const votePostUp = postId => dispatch =>
   ReadableAPI.votePostUp(postId).then(post => dispatch(votedPostUp(post)));

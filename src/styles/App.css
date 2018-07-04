@@ -642,6 +642,39 @@ textarea[type="text"] {
 }
 
 /* -------------------------------------------------- */
+/* ERROR and EMPTY */
+/* -------------------------------------------------- */
+
+.error-container {
+  text-align: center;
+}
+
+.error {
+  margin: 20px auto;
+  font-size: 300%;
+  color: #d81159;
+}
+
+.error-message {
+  margin: 0 auto;
+  font-weight: 400;
+  color: #383a3f;
+}
+
+.spinner {
+  margin: 50px auto;
+}
+
+.empty-state-container {
+  text-align: center;
+}
+
+.empty-state-message {
+  margin: 50px auto;
+  font-weight: 400;
+  color: #383a3f;
+}
+/* -------------------------------------------------- */
 /* DEBUG */
 /* -------------------------------------------------- */
 

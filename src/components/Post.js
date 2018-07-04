@@ -11,7 +11,9 @@ class Post extends Component {
   };
 
   handleOnClick = () => {
-    this.setState({ redirect: true });
+    if (this.props.isClickable === true) {
+      this.setState({ redirect: true });
+    }
   };
 
   render() {
@@ -107,7 +109,8 @@ class Post extends Component {
 
 Post.propTypes = {
   postInfo: PropTypes.object.isRequired,
-  handleEditPostButtonClicked: PropTypes.func.isRequired
+  handleEditPostButtonClicked: PropTypes.func.isRequired,
+  isClickable: PropTypes.bool.isRequired
 };
 
 function mapDispatchToProps(dispatch) {

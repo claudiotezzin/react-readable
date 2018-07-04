@@ -10,22 +10,30 @@ import AddButton from "components/AddButton";
 import Post from "components/Post";
 import Dropdown from "react-dropdown";
 import CreatePost from "components/CreatePost";
-import { DebounceInput } from "react-debounce-input";
+import { isValidCategory } from "../utils/helpers";
+import ErrorComponent from "../components/ErrorComponent";
+import ReactLoading from "react-loading";
+import EmptyState from "../components/EmptyState";
 
 const options = ["Date", "Votes"];
 
 class PostPage extends Component {
   state = {
     isModalOpen: false,
-    sortePostBy: options[0]
+    sortePostBy: options[0],
+    isLoading: true
   };
 
   postToEdit = undefined;
   showCategories = false;
 
   componentDidMount() {
-    this.props.getCategories();
-    this.props.getPosts();
+    Promise.all([this.props.getCategories(), this.props.getPosts()]).then(
+      () => {
+        console.log("I did everything!");
+        this.setState({ isLoading: false });
+      }
+    );
   }
 
   componentWillReceiveProps(nextProps) {
@@ -97,8 +105,30 @@ class PostPage extends Component {
         ? "all"
         : match.params.categoryName;
 
-    if (posts === undefined || posts.length === 0) {
-      return <div>LOADING...</div>;
+    const availablePosts = posts
+      .filter(p => p.deleted !== true)
+      .filter(
+        p => selectedCategory === "all" || p.category.name === selectedCategory
+      );
+
+    if (isValidCategory(selectedCategory) === false) {
+      return (
+        <ErrorComponent
+          message={`This category "${selectedCategory}" is not valid!`}
+        />
+      );
+    } else if (this.state.isLoading === true) {
+      return (
+        <div className="row">
+          <ReactLoading
+            type="spinningBubbles"
+            color="#D81159"
+            className="spinner"
+            height={367}
+            width={75}
+          />
+        </div>
+      );
     } else {
       const currentColor = categories.find(cat => cat.name === selectedCategory)
         .color;
@@ -132,19 +162,26 @@ class PostPage extends Component {
             </div>
           </div>
 
-          {posts
-            .filter(
-              post =>
-                selectedCategory === "all" ||
-                post.category.name === selectedCategory
-            )
-            .map(post => (
-              <Post
-                key={post.id}
-                postInfo={post}
-                handleEditPostButtonClicked={this.handleEditPostButtonClicked}
-              />
-            ))}
+          {availablePosts.length === 0 ? (
+            <EmptyState
+              message={"Sorry, no post for this category was found!!!"}
+            />
+          ) : (
+            availablePosts
+              .filter(
+                post =>
+                  selectedCategory === "all" ||
+                  post.category.name === selectedCategory
+              )
+              .map(post => (
+                <Post
+                  key={post.id}
+                  postInfo={post}
+                  isClickable={true}
+                  handleEditPostButtonClicked={this.handleEditPostButtonClicked}
+                />
+              ))
+          )}
 
           <CategoriesSelector show={this.showCategories} />
 
@@ -168,13 +205,17 @@ class PostPage extends Component {
 }
 
 function mapStateToProps({ categories, posts }) {
-  return {
-    categories: Object.keys(categories).map(key => categories[key]),
-    posts: Object.keys(posts).map(key => ({
-      ...posts[key],
-      category: categories[posts[key].category]
-    }))
-  };
+  if (posts === undefined) {
+    return {};
+  } else {
+    return {
+      categories: Object.keys(categories).map(key => categories[key]),
+      posts: Object.keys(posts).map(key => ({
+        ...posts[key],
+        category: categories[posts[key].category]
+      }))
+    };
+  }
 }
 
 function mapDispatchToProps(dispatch) {

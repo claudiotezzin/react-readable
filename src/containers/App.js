@@ -6,6 +6,7 @@ import "styles/App.css";
 import Header from "components/Header";
 import PostsPage from "containers/PostsPage";
 import PostDetail from "containers/PostDetail";
+import ErrorComponent from "../components/ErrorComponent";
 
 class App extends Component {
   render() {
@@ -17,14 +18,8 @@ class App extends Component {
           <Route exact path="/" component={PostsPage} />
           <Route exact path="/:categoryName" component={PostsPage} />
           <Route exact path="/:categoryName/:postId" component={PostDetail} />
-          <Route render={() => <div>ERROR</div>} />
+          <Route component={ErrorComponent} />
         </Switch>
-
-        {/* <Route
-          exact
-          path={"/:categoryName/:postId"}
-          render={() => <div>TESTE</div>}
-        /> */}
       </Fragment>
     );
   }

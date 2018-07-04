@@ -22,7 +22,10 @@ function posts(state = {}, action) {
       return result;
     }
     case VOTE_POST_UP:
-    case VOTE_POST_DOWN: {
+    case VOTE_POST_DOWN:
+    case ADD_POST:
+    case UPDATE_POST:
+    case REMOVE_POST: {
       const { post } = action;
 
       return {
@@ -33,34 +36,14 @@ function posts(state = {}, action) {
     case FETCH_POST_BY_ID: {
       const { post } = action;
 
-      return {
-        ...state,
-        [post.id]: post
-      };
-    }
-    case ADD_POST: {
-      const { post } = action;
-
-      return {
-        ...state,
-        [post.id]: post
-      };
-    }
-    case UPDATE_POST: {
-      const { post } = action;
-
-      return {
-        ...state,
-        [post.id]: post
-      };
-    }
-    case REMOVE_POST: {
-      const { post } = action;
-
-      let result = { ...state };
-      delete result[post.id];
-
-      return result;
+      if (post === undefined || Object.keys(post).length === 0) {
+        return state;
+      } else {
+        return {
+          ...state,
+          [post.id]: post
+        };
+      }
     }
     default:
       return state;
