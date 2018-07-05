@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
+import { DebounceInput } from "react-debounce-input";
 
 import "styles/customDropdown.css";
 
@@ -21,7 +22,8 @@ class PostPage extends Component {
   state = {
     isModalOpen: false,
     sortePostBy: options[0],
-    isLoading: true
+    isLoading: true,
+    query: ""
   };
 
   postToEdit = undefined;
@@ -105,11 +107,18 @@ class PostPage extends Component {
         ? "all"
         : match.params.categoryName;
 
-    const availablePosts = posts
+    let availablePosts = posts
       .filter(p => p.deleted !== true)
       .filter(
         p => selectedCategory === "all" || p.category.name === selectedCategory
       );
+
+    if (this.state.query !== "") {
+      availablePosts = posts.filter(p =>
+        p.title.toLowerCase().includes(this.state.query.toLowerCase())
+      );
+      debugger;
+    }
 
     if (isValidCategory(selectedCategory) === false) {
       return (
@@ -158,6 +167,15 @@ class PostPage extends Component {
                 onChange={e => this.setState({ sortePostBy: e.value })}
                 value={this.state.sortePostBy}
                 placeholder="Select an option"
+              />
+            </div>
+            <div className="posts-search col span-2-of-8">
+              <DebounceInput
+                minLength={1}
+                debounceTimeout={200}
+                placeholder="Search by title:"
+                value={this.state.query}
+                onChange={event => this.setState({ query: event.target.value })}
               />
             </div>
           </div>
